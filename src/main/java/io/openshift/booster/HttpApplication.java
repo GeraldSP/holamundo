@@ -11,7 +11,7 @@ import static io.vertx.core.http.HttpHeaders.CONTENT_TYPE;
 
 public class HttpApplication extends AbstractVerticle {
 
-  protected static final String template = "Hello, %s!";
+  protected static final String template = "¡Hola, %s!";
 
   @Override
   public void start(Future<Void> future) {
@@ -32,6 +32,7 @@ public class HttpApplication extends AbstractVerticle {
                 System.out.println("Server starter on port " + ar.result().actualPort());
               }
               future.handle(ar.mapEmpty());
+              
             });
 
   }
