@@ -45,7 +45,7 @@ spec:
           value: YirHlO8r
         - name: AUTO_DEPLOY_EXPLODED
           value: "false"
-        image: app-de-ejemplo
+        image: " "
         imagePullPolicy: Always
         livenessProbe:
           exec:
@@ -92,6 +92,13 @@ spec:
       terminationGracePeriodSeconds: 75
   test: false
   triggers:
+  - imageChangeParams:
+    containerNames:
+    - ws-tisal-datos
+    from:
+      kind: ImageStreamTag
+      name: app-de-ejemplo:latest
+    type: ImageChange
   - type: ConfigChange
 status:
   availableReplicas: 0
