@@ -1,0 +1,26 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    description: Route for application's https service.
+    openshift.io/host.generated: "true"
+  creationTimestamp: null
+  labels:
+    application: app-de-ejemplo
+    template: eap72-basic-s2i
+    template.openshift.io/template-instance-owner: eb837fe9-661b-4c19-befc-78ba50428e93
+    xpaas: 1.1.0
+  name: app-de-ejemplo
+  selfLink: /apis/route.openshift.io/v1/namespaces/dev/routes/app-de-ejemplo
+spec:
+  host: app-de-ejemplo-dev.apps.a.rlab.sh
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: app-de-ejemplo
+    weight: 100
+  wildcardPolicy: None
+status:
+  ingress: null

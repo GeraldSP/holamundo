@@ -1,0 +1,111 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  generation: 1
+  labels:
+    application: app-de-ejemplo
+    template: eap72-basic-s2i
+    template.openshift.io/template-instance-owner: eb837fe9-661b-4c19-befc-78ba50428e93
+    xpaas: 1.1.0
+  name: app-de-ejemplo
+  selfLink: /apis/apps.openshift.io/v1/namespaces/dev/deploymentconfigs/app-de-ejemplo
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    deploymentConfig: app-de-ejemplo
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        application: app-de-ejemplo
+        deploymentConfig: app-de-ejemplo
+      name: app-de-ejemplo
+    spec:
+      containers:
+      - env:
+        - name: JGROUPS_PING_PROTOCOL
+          value: dns.DNS_PING
+        - name: OPENSHIFT_DNS_PING_SERVICE_NAME
+          value: app-de-ejemplo-ping
+        - name: OPENSHIFT_DNS_PING_SERVICE_PORT
+          value: "8888"
+        - name: MQ_CLUSTER_PASSWORD
+          value: ucro0m41
+        - name: MQ_QUEUES
+        - name: MQ_TOPICS
+        - name: JGROUPS_CLUSTER_PASSWORD
+          value: YirHlO8r
+        - name: AUTO_DEPLOY_EXPLODED
+          value: "false"
+        image: app-de-ejemplo
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - /opt/eap/bin/livenessProbe.sh
+          failureThreshold: 3
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: app-de-ejemplo
+        ports:
+        - containerPort: 8778
+          name: jolokia
+          protocol: TCP
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 8888
+          name: ping
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - /opt/eap/bin/readinessProbe.sh false
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 3Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 75
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - app-de-ejemplo
+      from:
+        kind: ImageStreamTag
+        name: app-de-ejemplo:latest
+        namespace: dev
+    type: ImageChange
+  - type: ConfigChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
