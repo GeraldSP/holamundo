@@ -92,15 +92,6 @@ spec:
       terminationGracePeriodSeconds: 75
   test: false
   triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - app-de-ejemplo
-      from:
-        kind: ImageStreamTag
-        name: app-de-ejemplo:latest
-        namespace: dev
-    type: ImageChange
   - type: ConfigChange
 status:
   availableReplicas: 0
