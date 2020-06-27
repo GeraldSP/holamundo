@@ -93,8 +93,8 @@ spec:
   test: false
   triggers:
   - imageChangeParams:
-    containerNames:
-    - ws-tisal-datos
+      containerNames:
+        - app-de-ejemplo
     from:
       kind: ImageStreamTag
       name: app-de-ejemplo:latest
